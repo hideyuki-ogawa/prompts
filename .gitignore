@@ -1,6 +1,5 @@
 # API Keys and Environment Variables
 .env
-.env.example
 config.json
 api-keys.json
 
