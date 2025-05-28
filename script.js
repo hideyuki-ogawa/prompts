@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultSection = document.getElementById('resultSection');
     const generatedPrompt = document.getElementById('generatedPrompt');
     const copyBtn = document.getElementById('copyBtn');
+    const executeBtn = document.getElementById('executeBtn');
+    const executionSection = document.getElementById('executionSection');
+    const executionLoading = document.getElementById('executionLoading');
+    const aiResponse = document.getElementById('aiResponse');
+    const copyResponseBtn = document.getElementById('copyResponseBtn');
     const templateSelect = document.getElementById('templateSelect');
     const roleInput = document.getElementById('role');
     const taskTextarea = document.getElementById('task');
@@ -85,6 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
     templateSelect.addEventListener('change', handleTemplateChange);
     generateBtn.addEventListener('click', generatePrompt);
     copyBtn.addEventListener('click', copyToClipboard);
+    executeBtn.addEventListener('click', executePrompt);
+    copyResponseBtn.addEventListener('click', copyAiResponse);
 
     function handleTemplateChange() {
         const selectedTemplate = templateSelect.value;
@@ -178,6 +185,96 @@ document.addEventListener('DOMContentLoaded', function() {
         generatedPrompt.textContent = prompt;
         resultSection.style.display = 'block';
         resultSection.scrollIntoView({ behavior: 'smooth' });
+        
+        // Hide execution section when new prompt is generated
+        executionSection.style.display = 'none';
+    }
+    
+    async function executePrompt() {
+        const prompt = generatedPrompt.textContent.trim();
+        if (!prompt) {
+            alert('プロンプトを生成してから実行してください。');
+            return;
+        }
+        
+        showExecutionLoading();
+        
+        try {
+            const response = await fetch('/api/execute-prompt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt })
+            });
+            
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'プロンプトの実行に失敗しました');
+            }
+            
+            const result = await response.json();
+            displayAiResponse(result.response);
+            
+        } catch (error) {
+            console.error('Error executing prompt:', error);
+            alert('エラーが発生しました: ' + error.message);
+        } finally {
+            hideExecutionLoading();
+        }
+    }
+    
+    function showExecutionLoading() {
+        executionSection.style.display = 'block';
+        executionLoading.style.display = 'block';
+        aiResponse.style.display = 'none';
+        copyResponseBtn.style.display = 'none';
+        executionSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function hideExecutionLoading() {
+        executionLoading.style.display = 'none';
+    }
+    
+    function displayAiResponse(response) {
+        aiResponse.textContent = response;
+        aiResponse.style.display = 'block';
+        copyResponseBtn.style.display = 'inline-block';
+    }
+    
+    async function copyAiResponse() {
+        try {
+            await navigator.clipboard.writeText(aiResponse.textContent);
+            
+            const originalText = copyResponseBtn.textContent;
+            copyResponseBtn.textContent = 'コピーしました！';
+            copyResponseBtn.classList.add('copied');
+            
+            setTimeout(() => {
+                copyResponseBtn.textContent = originalText;
+                copyResponseBtn.classList.remove('copied');
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Failed to copy:', error);
+            
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = aiResponse.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            const originalText = copyResponseBtn.textContent;
+            copyResponseBtn.textContent = 'コピーしました！';
+            copyResponseBtn.classList.add('copied');
+            
+            setTimeout(() => {
+                copyResponseBtn.textContent = originalText;
+                copyResponseBtn.classList.remove('copied');
+            }, 2000);
+        }
     }
 
     async function copyToClipboard() {

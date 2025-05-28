@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>名刺データ化ツール</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="business-card.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>名刺データ化ツール</h1>
+            <nav class="breadcrumb">
+                <a href="index.html">プロンプト生成</a> / <span>名刺データ化</span>
+            </nav>
+        </header>
+
+        <div class="upload-section">
+            <h2>名刺画像をアップロード</h2>
+            <div class="upload-area">
+                <input type="file" id="businessCardImage" accept="image/*" style="display: none;">
+                <div id="uploadZone" class="upload-zone">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7,10 12,15 17,10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <p>名刺画像をドラッグ&ドロップ<br>またはクリックして選択</p>
+                    <span class="file-info">JPG, PNG, GIF対応 (最大10MB)</span>
+                </div>
+                <div id="imagePreview" class="image-preview-section" style="display: none;">
+                    <img id="previewImage" src="" alt="名刺プレビュー">
+                    <div class="image-controls">
+                        <button id="removeImage" class="btn-secondary">画像を削除</button>
+                        <button id="processImage" class="btn-primary">データ抽出開始</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="processingSection" class="processing-section" style="display: none;">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>AIが名刺を解析中...</p>
+            </div>
+        </div>
+
+        <div id="resultSection" class="result-section" style="display: none;">
+            <h2>抽出結果</h2>
+            <div class="result-tabs">
+                <button class="tab-btn active" data-tab="structured">構造化データ</button>
+                <button class="tab-btn" data-tab="json">JSON</button>
+                <button class="tab-btn" data-tab="csv">CSV</button>
+            </div>
+            
+            <div id="structuredTab" class="tab-content active">
+                <div class="contact-card">
+                    <div class="field-group">
+                        <label>氏名</label>
+                        <span id="extractedName">-</span>
+                    </div>
+                    <div class="field-group">
+                        <label>会社名</label>
+                        <span id="extractedCompany">-</span>
+                    </div>
+                    <div class="field-group">
+                        <label>部署</label>
+                        <span id="extractedDepartment">-</span>
+                    </div>
+                    <div class="field-group">
+                        <label>役職</label>
+                        <span id="extractedPosition">-</span>
+                    </div>
+                    <div class="field-group">
+                        <label>電話番号</label>
+                        <span id="extractedPhone">-</span>
+                    </div>
+                    <div class="field-group">
+                        <label>メールアドレス</label>
+                        <span id="extractedEmail">-</span>
+                    </div>
+                    <div class="field-group">
+                        <label>住所</label>
+                        <span id="extractedAddress">-</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="jsonTab" class="tab-content">
+                <div class="code-block">
+                    <pre id="jsonOutput"></pre>
+                    <button class="copy-btn" data-target="jsonOutput">コピー</button>
+                </div>
+            </div>
+            
+            <div id="csvTab" class="tab-content">
+                <div class="code-block">
+                    <pre id="csvOutput"></pre>
+                    <button class="copy-btn" data-target="csvOutput">コピー</button>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="saveToDatabase" class="btn-primary">データベースに保存</button>
+                <button id="downloadJson" class="btn-secondary">JSONダウンロード</button>
+                <button id="downloadCsv" class="btn-secondary">CSVダウンロード</button>
+            </div>
+        </div>
+
+        <div id="savedRecords" class="saved-records-section">
+            <h2>保存済みデータ</h2>
+            <div id="recordsList" class="records-list"></div>
+        </div>
+    </div>
+
+    <div id="apiKeyModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>OpenAI API Key設定</h3>
+            <p>名刺を解析するためにOpenAI GPT-4o-miniのAPIキーが必要です。</p>
+            <div class="setup-instructions">
+                <h4>設定手順:</h4>
+                <ol>
+                    <li><code>.env.example</code>を<code>.env</code>にコピー</li>
+                    <li><code>OPENAI_API_KEY=your-key-here</code> を設定</li>
+                    <li>サーバーを再起動</li>
+                </ol>
+            </div>
+            <input type="password" id="apiKeyInput" placeholder="sk-..." style="display: none;">
+            <div class="modal-buttons">
+                <button id="cancelApiKey" class="btn-primary">OK</button>
+            </div>
+            <p class="api-note">※APIキーは.envファイルで安全に管理されます</p>
+        </div>
+    </div>
+
+    <script src="business-card.js"></script>
+</body>
+</html>

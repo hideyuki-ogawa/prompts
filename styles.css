@@ -17,11 +17,42 @@ body {
     padding: 20px;
 }
 
-h1 {
+.app-header {
     text-align: center;
-    color: #2c3e50;
     margin-bottom: 30px;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
     font-size: 2.5rem;
+}
+
+.app-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.nav-link {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #666;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: #3498db;
+    background-color: #f0f8ff;
+}
+
+.nav-link.active {
+    color: #3498db;
+    background-color: #e8f4fd;
+    font-weight: 600;
 }
 
 h2 {
@@ -152,8 +183,29 @@ textarea {
     overflow-y: auto;
 }
 
+.result-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
 .copy-btn {
     background-color: #27ae60;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.execute-btn {
+    background-color: #e74c3c;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -173,6 +225,53 @@ textarea {
 
 .copy-btn.copied {
     background-color: #16a085;
+}
+
+.execute-btn:hover {
+    background-color: #c0392b;
+}
+
+.execution-section {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.execution-loading {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #e74c3c;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.ai-response {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 @media (max-width: 768px) {
@@ -259,6 +358,16 @@ textarea {
         padding: 15px 25px;
         font-size: 16px;
         border-radius: 8px;
+        width: 100%;
+        min-height: 50px;
+    }
+    
+    .result-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .execute-btn {
         width: 100%;
         min-height: 50px;
     }

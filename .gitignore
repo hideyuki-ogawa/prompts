@@ -1,0 +1,63 @@
+# API Keys and Environment Variables
+.env
+.env.example
+config.json
+api-keys.json
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+business_cards.db
+
+# Uploaded files
+uploads/
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python cache (if using Python backend)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
