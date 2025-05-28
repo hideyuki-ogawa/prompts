@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロンプト生成ツール</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>プロンプト生成ツール</h1>
+        
+        <div class="template-section">
+            <label for="templateSelect">テンプレート選択:</label>
+            <select id="templateSelect">
+                <option value="custom">カスタム（自由入力）</option>
+                <option value="email">メール作成</option>
+                <option value="sns">SNS投稿</option>
+                <option value="blog">会社ブログ投稿</option>
+                <option value="codeReview">コードレビュー</option>
+                <option value="analysis">文書分析</option>
+                <option value="presentation">プレゼンテーション作成</option>
+            </select>
+        </div>
+        
+        <form id="promptForm">
+            <div class="form-group">
+                <label for="role">役割・立場:</label>
+                <input type="text" id="role" name="role" placeholder="例: あなたは経験豊富なプログラマーです">
+            </div>
+            
+            <div class="form-group">
+                <label for="task">タスク・目的:</label>
+                <div id="taskCheckboxes" class="checkbox-group" style="display: none;">
+                    <!-- テンプレート用のチェックボックスがここに動的生成される -->
+                </div>
+                <textarea id="task" name="task" rows="3" placeholder="例: Pythonでデータ分析を行うスクリプトを作成してください"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="context">コンテキスト・背景:</label>
+                <textarea id="context" name="context" rows="3" placeholder="例: 売上データCSVファイルがあり、月別の傾向を分析したい"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="requirements">要件・制約:</label>
+                <textarea id="requirements" name="requirements" rows="3" placeholder="例: pandas, matplotlibを使用し、コメントを日本語で記述"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="output">出力形式・例:</label>
+                <textarea id="output" name="output" rows="3" placeholder="例: グラフ付きの分析レポートとして出力"></textarea>
+            </div>
+            
+            <button type="button" id="generateBtn">プロンプト生成</button>
+        </form>
+        
+        <div id="resultSection" class="result-section">
+            <h2>生成されたプロンプト</h2>
+            <div id="generatedPrompt" class="generated-prompt"></div>
+            <button id="copyBtn" class="copy-btn">クリップボードにコピー</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
